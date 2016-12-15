@@ -4,25 +4,26 @@
 #include "glinclude.h"
 #include "glslprogram.h"
 
+#include <string>
 #include <glm/glm.hpp>
 
-#define viewportWidth 600
-#define viewportHeight 800
+#define viewportWidth 400
+#define viewportHeight 500
 #define gridWidth (viewportWidth/2)
 #define gridHeight (viewportHeight/2)
 #define cellSize (1.25f)
 #define splatRadius ((float)gridWidth/8.0f)
 
-const float velocityDissipation = 0.99f;
-const float temperatureDissipation = 0.99f;
+const float velocityDissipation = 0.9999f;
+const float temperatureDissipation = 0.9999f;
 const float densityDissipation = 0.9999f;
 const glm::ivec2 impulsePosition = glm::ivec2(gridWidth/2, -(int)splatRadius/2);
-const float impulseTemperature = 16.0f;
-const float impulseDensity = 1.0f;
-const float timeStep = 0.125f;
+const float impulseTemperature = 4.0f;
+const float impulseDensity = 2.0f;
+const float timeStep = 0.025f;
 const float ambientTemperature = 0.0f;
-const float smokeBuoyancy = 1.0f;
-const float smokeWeight = 0.25f;
+const float smokeBuoyancy = 12.0f;
+const float smokeWeight = 0.0005f;
 const float gradientScale = 1.125f/cellSize;
 const int numJacobiIterations = 40;
 
@@ -63,6 +64,7 @@ private:
     Slab velocity, density, pressure, temperature;
     Surface divergence, obstacles, hiresObstacles;
 
+    void initPrograms(ProgramRec programs, string shaderNames[]);
     void resetState();
     Slab createSlab(int width, int height, int numComponents);
     Surface createSurface(int width, int height, int numComponents);

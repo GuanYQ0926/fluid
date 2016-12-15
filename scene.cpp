@@ -225,7 +225,7 @@ void Scene::renderScene()
 
     //draw obstacles
     glBindTexture(GL_TEXTURE_2D, hiresObstacles.textureHandle);
-    visualizeProgram.setUniform("FillColor", glm::vec3(0.125f, 0.4f, 0.75f));
+    visualizeProgram.setUniform("FillColor", glm::vec3(0.125f, 0.45f, 0.45f));
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
     glDisable(GL_BLEND);
@@ -530,31 +530,3 @@ void Scene::subtractGradient(Surface velocity, Surface pressure,
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     resetState();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

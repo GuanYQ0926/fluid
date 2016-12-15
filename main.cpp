@@ -43,7 +43,7 @@ int main()
         {
             string title;
             std::stringstream sfps;
-            sfps << double(frames)/double(currentFrame-lastFrame);
+            sfps << double(frames);//double(currentFrame-lastFrame);
             sfps >> title;
             lastFrame =glfwGetTime();//+= 1.0f;
             glfwSetWindowTitle(window, title.c_str());
