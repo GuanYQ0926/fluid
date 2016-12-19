@@ -127,7 +127,27 @@ Scene::Scene()
         printf("ApplyBuoyancy::Shader program failed to link!\n");
         exit(1);
     }
-
+    //Visualization test
+    if(!programs.VisualizationTest.compileShaderFromFile("/home/guanyuqing/Documents/cppcode/fluid/fluid/shaders/vertex.vs",
+                                                         GLSLShader::VERTEX))
+    {
+        printf("Visualization_TEST::Vertex shader failed to compile!\n%s",
+               programs.VisualizationTest.log().c_str());
+        exit(1);
+    }
+    if(!programs.VisualizationTest.compileShaderFromFile("/home/guanyuqing/Documents/cppcode/fluid/fluid/shaders/visualize.fs",
+                                                         GLSLShader::FRAGMENT))
+    {
+        printf("Visualization_TEST::Fragment shader failed to compile!\n%s",
+               programs.VisualizationTest.log().c_str());
+        exit(1);
+    }
+    if(!programs.VisualizationTest.link())
+    {
+        printf("Visualization_TEST::Shaders failed to compile!\n%s",
+              programs.VisualizationTest.log().c_str());
+        exit(1);
+    }
 }
 
 void Scene::initScene()
@@ -140,6 +160,7 @@ void Scene::initScene()
     temperature = createSlab(w, h, 1);
     divergence = createSurface(w, h, 3);
 
+    /*
     if(!visualizeProgram.compileShaderFromFile("/home/guanyuqing/Documents/cppcode/fluid/fluid/shaders/vertex.vs",
                                                GLSLShader::VERTEX))
     {
@@ -160,6 +181,8 @@ void Scene::initScene()
         exit(1);
     }
     visualizeProgram.use();
+    */
+    //programs.VisualizationTest.use();
 
     obstacles = createSurface(w, h, 3);
     createObstacles(obstacles, w, h);
@@ -207,7 +230,7 @@ void Scene::renderScene()
 
     subtractGradient(velocity.ping, pressure.ping, obstacles, velocity.pong);
     swapSurfaces(&velocity);
-
+    /*
     //render
     visualizeProgram.use();
     glEnable(GL_BLEND);
@@ -226,6 +249,28 @@ void Scene::renderScene()
     //draw obstacles
     glBindTexture(GL_TEXTURE_2D, hiresObstacles.textureHandle);
     visualizeProgram.setUniform("FillColor", glm::vec3(0.125f, 0.45f, 0.45f));
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+    glDisable(GL_BLEND);*/
+
+    //render
+    programs.VisualizationTest.use();
+    glEnable(GL_BLEND);
+
+    glViewport(0, 0, viewportWidth, viewportHeight);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glClearColor(0, 0, 0, 1);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    //draw ink
+    glBindTexture(GL_TEXTURE_2D, density.ping.textureHandle);
+    programs.VisualizationTest.setUniform("FillColor", glm::vec3(1));
+    programs.VisualizationTest.setUniform("Scale", glm::vec2(1.0f/viewportWidth, 1.0f/viewportHeight));
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+    //draw obstacles
+    glBindTexture(GL_TEXTURE_2D, hiresObstacles.textureHandle);
+    programs.VisualizationTest.setUniform("FillColor", glm::vec3(0.125f, 0.45f, 0.45f));
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
     glDisable(GL_BLEND);

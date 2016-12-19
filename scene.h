@@ -35,6 +35,7 @@ struct ProgramRec{
     GLSLProgram ComputeDivergence;
     GLSLProgram ApplyImpulse;
     GLSLProgram ApplyBuoyancy;
+    GLSLProgram VisualizationTest;
 };
 
 struct Surface{
