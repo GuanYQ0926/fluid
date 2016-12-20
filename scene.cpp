@@ -313,9 +313,9 @@ Surface Scene::createSurface(int width, int height, int numComponents)
         exit(1);
     }
 
-    GLuint colorbuffer;
-    glGenRenderbuffers(1, &colorbuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, colorbuffer);
+    //GLuint colorbuffer;
+    //glGenRenderbuffers(1, &colorbuffer);
+    //glBindRenderbuffer(GL_RENDERBUFFER, colorbuffer);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureHandle, 0);
     if(glCheckFramebufferStatus(GL_FRAMEBUFFER)!=GL_FRAMEBUFFER_COMPLETE)
     {
